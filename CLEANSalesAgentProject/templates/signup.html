@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Sales Training AI{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-form-container">
+                <div class="auth-header">
+                    <h1>Create Your Account</h1>
+                    <p>Join thousands of sales professionals improving their skills</p>
+                </div>
+                
+                <form id="signupForm" class="auth-form">
+                    <input type="hidden" name="csrf_token" value="{{ g.csrf_token }}">
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="name" name="name" placeholder="Your full name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Create a password" required minlength="8">
+                            <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-meter">
+                                <div class="strength-segment"></div>
+                                <div class="strength-segment"></div>
+                                <div class="strength-segment"></div>
+                            </div>
+                            <span class="strength-text">Password strength: <span id="strengthText">Weak</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-agree">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="agree" required>
+                            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-submit">
+                        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                    </div>
+                    
+                    <div id="signupError" class="form-error" style="display: none;"></div>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                
+                <div class="social-auth">
+                    <a href="{{ url_for('auth.google_login') }}" class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        <span>Continue with Google</span>
+                    </a>
+                </div>
+                
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+                </div>
+            </div>
+            
+            <div class="auth-image">
+                <img src="{{ url_for('static', filename='images/signup-illustration.svg') }}" alt="Sign up illustration">
+                <div class="auth-image-text">
+                    <h2>Perfect Your Sales Skills</h2>
+                    <p>Train with realistic AI-powered scenarios designed by sales experts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script nonce="{{ g.csp_nonce }}">
+    document.addEventListener('DOMContentLoaded', function() {
+        const signupForm = document.getElementById('signupForm');
+        const signupError = document.getElementById('signupError');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordToggle = document.querySelector('.password-toggle');
+        const strengthMeter = document.querySelector('.strength-meter');
+        const strengthText = document.getElementById('strengthText');
+        const strengthSegments = document.querySelectorAll('.strength-segment');
+        
+        // Toggle password visibility
+        if (passwordToggle && passwordInput) {
+            passwordToggle.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                confirmPasswordInput.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+        
+        // Password strength checker
+        if (passwordInput && strengthMeter && strengthText) {
+            passwordInput.addEventListener('input', function() {
+                checkPasswordStrength(this.value);
+            });
+        }
+        
+        // Handle form submission
+        if (signupForm) {
+            signupForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const agreeCheckbox = document.querySelector('input[name="agree"]');
+                
+                // Validation
+                if (!name || !email || !password || !confirmPassword) {
+                    showError('Please fill out all fields');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showError('Passwords do not match');
+                    return;
+                }
+                
+                if (password.length < 8) {
+                    showError('Password must be at least 8 characters long');
+                    return;
+                }
+                
+                if (!agreeCheckbox.checked) {
+                    showError('You must agree to the Terms of Service and Privacy Policy');
+                    return;
+                }
+                
+                try {
+                    // Show loading state
+                    const submitButton = signupForm.querySelector('button[type="submit"]');
+                    const originalText = submitButton.innerHTML;
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+                    
+                    // Send registration request
+                    const response = await fetch('/auth/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': '{{ g.csrf_token }}'
+                        },
+                        body: JSON.stringify({ name, email, password })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    // Reset button state
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalText;
+                    
+                    if (response.ok) {
+                        // Redirect to dashboard or other specified location
+                        window.location.href = data.redirect || '/dashboard';
+                    } else {
+                        // Show error message
+                        showError(data.error || 'Account creation failed. Please try again.');
+                    }
+                } catch (err) {
+                    console.error('Signup error:', err);
+                    showError('A network error occurred. Please try again.');
+                    
+                    // Reset button state
+                    const submitButton = signupForm.querySelector('button[type="submit"]');
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Create Account';
+                }
+            });
+        }
+        
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            
+            // Length check
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Complexity checks
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[a-z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            // Update UI based on strength (0-6 scale)
+            let strengthLevel = 'Weak';
+            let strengthClass = 'weak';
+            
+            if (strength >= 5) {
+                strengthLevel = 'Strong';
+                strengthClass = 'strong';
+            } else if (strength >= 3) {
+                strengthLevel = 'Medium';
+                strengthClass = 'medium';
+            }
+            
+            // Update text
+            strengthText.textContent = strengthLevel;
+            
+            // Update meter segments
+            strengthSegments.forEach((segment, index) => {
+                segment.className = 'strength-segment';
+                
+                if (index === 0 && strength >= 1) {
+                    segment.classList.add(strength >= 3 ? strengthClass : 'weak');
+                } else if (index === 1 && strength >= 3) {
+                    segment.classList.add(strength >= 5 ? strengthClass : 'medium');
+                } else if (index === 2 && strength >= 5) {
+                    segment.classList.add('strong');
+                }
+            });
+        }
+        
+        function showError(message) {
+            if (signupError) {
+                signupError.textContent = message;
+                signupError.style.display = 'block';
+                
+                // Highlight animation
+                signupError.classList.add('shake');
+                setTimeout(() => {
+                    signupError.classList.remove('shake');
+                }, 500);
+                
+                // Scroll to error
+                signupError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    });
+</script>
+{% endblock %}

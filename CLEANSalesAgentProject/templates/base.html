@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ g.csrf_token }}">
+    
+    <!-- Security headers -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <title>{% block title %}Sales Training AI{% endblock %}</title>
+    
+    <!-- Base styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    
+    <!-- Page-specific styles -->
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Sales Training AI Logo">
+                    <span>SalesTrainer AI</span>
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <span class="hamburger"></span>
+                </button>
+                
+                <ul class="nav-links">
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('chat.dashboard') }}" class="nav-link {% if request.endpoint == 'chat.dashboard' %}active{% endif %}">Dashboard</a></li>
+                        <li><a href="{{ url_for('chat.chat_page') }}" class="nav-link {% if request.endpoint == 'chat.chat_page' %}active{% endif %}">Practice</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+                    {% endif %}
+                </ul>
+                
+                <div class="auth-buttons">
+                    {% if current_user.is_authenticated %}
+                        <div class="user-menu">
+                            <button class="user-menu-toggle">
+                                <div class="avatar">
+                                    {% set initials = current_user.name.split()|map('first')|join|upper %}
+                                    {{ initials }}
+                                </div>
+                                <span class="user-name">{{ current_user.name }}</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            
+                            <div class="user-dropdown">
+                                <a href="{{ url_for('chat.dashboard') }}">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                                <a href="{{ url_for('auth.logout') }}">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Sign out</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline">Log In</a>
+                        <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Sign Up</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Flash messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        <div class="flash-content">
+                            {% if category == 'error' %}
+                                <i class="fas fa-exclamation-circle"></i>
+                            {% elif category == 'success' %}
+                                <i class="fas fa-check-circle"></i>
+                            {% elif category == 'info' %}
+                                <i class="fas fa-info-circle"></i>
+                            {% else %}
+                                <i class="fas fa-bell"></i>
+                            {% endif %}
+                            <span>{{ message }}</span>
+                        </div>
+                        <button class="flash-close" aria-label="Close message">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <!-- Main content -->
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="{{ url_for('static', filename='images/logo-white.svg') }}" alt="Sales Training AI Logo">
+                        <span>SalesTrainer AI</span>
+                    </div>
+                    <p>Perfect your sales skills with AI-powered practice sessions and personalized feedback.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="{{ url_for('index') }}">Home</a></li>
+                            {% if current_user.is_authenticated %}
+                                <li><a href="{{ url_for('chat.dashboard') }}">Dashboard</a></li>
+                                <li><a href="{{ url_for('chat.chat_page') }}">Practice</a></li>
+                            {% else %}
+                                <li><a href="{{ url_for('auth.signup') }}">Sign Up</a></li>
+                                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    <div class="link-group">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; {{ g.current_year }} SalesTrainer AI. All rights reserved.</p>
+                
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Core JavaScript -->
+    <script nonce="{{ g.csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (mobileMenuToggle && navLinks) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
+            
+            // User dropdown toggle
+            const userMenuToggle = document.querySelector('.user-menu-toggle');
+            const userDropdown = document.querySelector('.user-dropdown');
+            
+            if (userMenuToggle && userDropdown) {
+                userMenuToggle.addEventListener('click', function() {
+                    userDropdown.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userMenuToggle.contains(e.target) && !userDropdown.contains(e.target)) {
+                        userDropdown.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Flash message close buttons
+            const flashCloseButtons = document.querySelectorAll('.flash-close');
+            
+            flashCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const flashMessage = this.closest('.flash-message');
+                    flashMessage.classList.add('fadeOut');
+                    
+                    setTimeout(() => {
+                        flashMessage.remove();
+                    }, 300);
+                });
+            });
+            
+            // Auto-dismiss flash messages after 5 seconds
+            setTimeout(() => {
+                document.querySelectorAll('.flash-message').forEach(message => {
+                    message.classList.add('fadeOut');
+                    setTimeout(() => {
+                        if (message.parentNode) {
+                            message.parentNode.removeChild(message);
+                        }
+                    }, 300);
+                });
+            }, 5000);
+        });
+    </script>
+    
+    <!-- Page-specific scripts -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>

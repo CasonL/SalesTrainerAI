@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Limited - Sales Training AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style nonce="{{ g.csp_nonce }}">
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-8);
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            color: var(--warning-color);
+            margin-bottom: var(--space-6);
+        }
+        
+        .error-code {
+            font-size: 6rem;
+            font-weight: var(--fw-bold);
+            line-height: 1;
+            color: var(--warning-color);
+            margin-bottom: var(--space-4);
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            margin-bottom: var(--space-2);
+        }
+        
+        .error-message {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: var(--space-6);
+        }
+        
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .timer-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .timer {
+            font-size: 2rem;
+            font-weight: var(--fw-bold);
+            color: var(--warning-color);
+            margin-bottom: var(--space-4);
+        }
+        
+        .progress-bar {
+            width: 300px;
+            height: 8px;
+            background-color: var(--neutral-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--warning-color);
+            width: 0%;
+            transition: width 1s linear;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: var(--space-4);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">
+            <i class="fas fa-hourglass-half"></i>
+        </div>
+        <div class="error-code">429</div>
+        <h1 class="error-title">Too Many Requests</h1>
+        <p class="error-message">You've made too many requests in a short period of time. Please wait a moment before trying again.</p>
+        
+        <div class="timer-container">
+            <div class="timer-label">You can try again in:</div>
+            <div class="timer" id="countdown">
+                <span id="seconds">{{ retry_after }}</span> seconds
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <a href="{{ url_for('index') }}" class="btn btn-outline btn-lg" id="homeButton">
+                <i class="fas fa-home"></i> Go Home
+            </a>
+            <button class="btn btn-primary btn-lg" id="retryButton" disabled>
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+        </div>
+    </div>
+    
+    <script nonce="{{ g.csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the retry-after value from the page
+            let retryAfter = parseInt("{{ retry_after }}", 10) || 60;
+            
+            // Set up countdown timer
+            const secondsElement = document.getElementById('seconds');
+            const progressFill = document.getElementById('progressFill');
+            const retryButton = document.getElementById('retryButton');
+            
+            // Record the starting time for the progress bar
+            const totalTime = retryAfter;
+            let timeRemaining = retryAfter;
+            
+            // Update the countdown display
+            secondsElement.textContent = timeRemaining;
+            
+            // Start the countdown
+            const countdownInterval = setInterval(function() {
+                timeRemaining--;
+                
+                // Update display
+                secondsElement.textContent = timeRemaining;
+                
+                // Update progress bar
+                const percentComplete = ((totalTime - timeRemaining) / totalTime) * 100;
+                progressFill.style.width = `${percentComplete}%`;
+                
+                // When countdown reaches zero
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    
+                    // Enable the retry button
+                    retryButton.disabled = false;
+                    
+                    // Change text
+                    secondsElement.parentElement.innerHTML = 'You can try again now!';
+                    
+                    // Make the button pulsate to draw attention
+                    retryButton.classList.add('animate-pulse');
+                    
+                    // Add click handler to reload the page
+                    retryButton.addEventListener('click', function() {
+                        window.location.reload();
+                    });
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>;500;600;700&display=swap" rel="stylesheet">
+    <style nonce="{{ g.csp_nonce }}">
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-8);
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            color: var(--primary-light);
+            margin-bottom: var(--space-6);
+        }
+        
+        .error-code {
+            font-size: 6rem;
+            font-weight: var(--fw-bold);
+            line-height: 1;
+            color: var(--primary-color);
+            margin-bottom: var(--space-4);
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            margin-bottom: var(--space-2);
+        }
+        
+        .error-message {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: var(--space-8);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: var(--space-4);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">
+            <i class="fas fa-map-signs"></i>
+        </div>
+        <div class="error-code">404</div>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-message">We couldn't find the page you're looking for. It might have been moved, deleted, or never existed.</p>
+        <div class="button-group">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-home"></i> Go Home
+            </a>
+            <button onclick="history.back()" class="btn btn-outline btn-lg">
+                <i class="fas fa-arrow-left"></i> Go Back
+            </button>
+        </div>
+    </div>
+</body>
+</html>

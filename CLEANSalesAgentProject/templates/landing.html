@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+
+{% block title %}Sales Training AI - Practice Your Sales Skills{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-star"></i> Powered by Claude 3.7 Sonnet
+                </div>
+                
+                <h1 class="hero-title">Master Sales with <span class="highlight">AI-Powered</span> Practice</h1>
+                
+                <p class="hero-subtitle">
+                    Train with realistic customer scenarios that adapt to your experience level. Improve your sales skills through practice, feedback, and insights.
+                </p>
+                
+                <div class="hero-cta">
+                    <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-large">Get Started Free</a>
+                    <a href="#how-it-works" class="btn btn-outline-primary btn-large">How It Works</a>
+                </div>
+                
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Roleplays</span>
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Performance Tracking</span>
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Detailed Feedback</span>
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-microphone"></i>
+                        <span>Voice Support</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-image">
+                <img src="{{ url_for('static', filename='images/hero-illustration.svg') }}" alt="Sales Training Illustration">
+                <div class="hero-shape hero-shape-1"></div>
+                <div class="hero-shape hero-shape-2"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="container">
+        <div class="section-header">
+            <h2>Train Like It's Real</h2>
+            <p>Practice makes perfect. Our AI-powered platform provides you with realistic sales scenarios to help you refine your skills.</p>
+        </div>
+        
+        <div class="feature-cards">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3>Realistic Customer Personas</h3>
+                <p>Interact with AI-generated customer profiles that have realistic pain points, objections, and buying signals—just like real prospects.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Adaptive Difficulty</h3>
+                <p>Our AI adjusts to your experience level. As you improve, scenarios become more challenging with tougher objections and complex needs.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Natural Conversations</h3>
+                <p>Practice with an AI that responds naturally and conversationally, giving you a realistic experience for better preparation.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <h3>Detailed Feedback</h3>
+                <p>Get actionable insights on your performance, highlighting strengths and areas for improvement after each session.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microphone-alt"></i>
+                </div>
+                <h3>Voice Interaction</h3>
+                <p>Practice just like a real call with voice input and output to develop your verbal sales skills.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Skill Progress Tracking</h3>
+                <p>Monitor your improvement over time across key sales competencies like rapport building, objection handling, and closing.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <h2>How It Works</h2>
+            <p>Practice your sales skills in a safe environment before facing real customers.</p>
+        </div>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Set Your Context</h3>
+                    <p>Tell us about your sales experience, the product or service you're selling, and who your target customers are.</p>
+                </div>
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename='images/step1.svg') }}" alt="Step 1">
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Practice the Sale</h3>
+                    <p>Engage in a realistic conversation with our AI customer. Build rapport, discover needs, handle objections, and close the deal.</p>
+                </div>
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename='images/step2.svg') }}" alt="Step 2">
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Get Personalized Feedback</h3>
+                    <p>Receive detailed analysis of your performance with actionable recommendations for improvement.</p>
+                </div>
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename='images/step3.svg') }}" alt="Step 3">
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Track Your Progress</h3>
+                    <p>Monitor your improvement over time and identify which skills need more practice.</p>
+                </div>
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename='images/step4.svg') }}" alt="Step 4">
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-center">
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-large">Start Practicing Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <div class="container">
+        <div class="section-header">
+            <h2>What Users Say</h2>
+            <p>Hear from salespeople who have transformed their skills with our platform.</p>
+        </div>
+        
+        <div class="testimonial-carousel">
+            <div class="testimonial active" id="testimonial-1">
+                <div class="testimonial-content">
+                    <p>I used to dread sales calls, but after practicing with this AI, I'm much more confident. The realistic objections and feedback have improved my closing rate by 30%!</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="{{ url_for('static', filename='images/testimonial1.jpg') }}" alt="Sarah Johnson">
+                    <div class="author-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>Account Executive, TechSolutions</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial" id="testimonial-2">
+                <div class="testimonial-content">
+                    <p>As a sales manager, I've made this tool mandatory for my team. It's like having a personal sales coach for each rep. Our new hires are ramping up in half the time.</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="{{ url_for('static', filename='images/testimonial2.jpg') }}" alt="Michael Torres">
+                    <div class="author-info">
+                        <h4>Michael Torres</h4>
+                        <p>Sales Director, Innovate Inc.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial" id="testimonial-3">
+                <div class="testimonial-content">
+                    <p>The AI customer personas are incredibly realistic. I've practiced handling tough objections that I later encountered in real sales meetings—and was prepared for!</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="{{ url_for('static', filename='images/testimonial3.jpg') }}" alt="Emily Chen">
+                    <div class="author-info">
+                        <h4>Emily Chen</h4>
+                        <p>Sales Representative, GrowthPartners</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="testimonial-controls">
+            <button class="testimonial-prev" aria-label="Previous testimonial">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="testimonial-dots">
+                <button class="dot active" data-index="1" aria-label="Testimonial 1"></button>
+                <button class="dot" data-index="2" aria-label="Testimonial 2"></button>
+                <button class="dot" data-index="3" aria-label="Testimonial 3"></button>
+            </div>
+            
+            <button class="testimonial-next" aria-label="Next testimonial">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Perfect Your Sales Skills Today</h2>
+            <p>Start practicing with realistic AI conversations tailored to your experience level and sales context.</p>
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary btn-large">Create Free Account</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script nonce="{{ g.csp_nonce }}">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Testimonial carousel
+        const testimonials = document.querySelectorAll('.testimonial');
+        const dots = document.querySelectorAll('.dot');
+        const prevButton = document.querySelector('.testimonial-prev');
+        const nextButton = document.querySelector('.testimonial-next');
+        let currentIndex = 0;
+        
+        // Set up carousel controls
+        function showTestimonial(index) {
+            // Hide all testimonials
+            testimonials.forEach(testimonial => {
+                testimonial.classList.remove('active');
+            });
+            
+            // Show selected testimonial
+            testimonials[index].classList.add('active');
+            
+            // Update dots
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            dots[index].classList.add('active');
+            
+            // Update current index
+            currentIndex = index;
+        }
+        
+        // Previous button
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                let newIndex = currentIndex - 1;
+                if (newIndex < 0) newIndex = testimonials.length - 1;
+                showTestimonial(newIndex);
+            });
+        }
+        
+        // Next button
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                let newIndex = currentIndex + 1;
+                if (newIndex >= testimonials.length) newIndex = 0;
+                showTestimonial(newIndex);
+            });
+        }
+        
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showTestimonial(index);
+            });
+        });
+        
+        // Auto-advance carousel
+        let carouselInterval = setInterval(() => {
+            let newIndex = currentIndex + 1;
+            if (newIndex >= testimonials.length) newIndex = 0;
+            showTestimonial(newIndex);
+        }, 8000);
+        
+        // Pause carousel on hover
+        const testimonialCarousel = document.querySelector('.testimonial-carousel');
+        if (testimonialCarousel) {
+            testimonialCarousel.addEventListener('mouseenter', () => {
+                clearInterval(carouselInterval);
+            });
+            
+            testimonialCarousel.addEventListener('mouseleave', () => {
+                carouselInterval = setInterval(() => {
+                    let newIndex = currentIndex + 1;
+                    if (newIndex >= testimonials.length) newIndex = 0;
+                    showTestimonial(newIndex);
+                }, 8000);
+            });
+        }
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

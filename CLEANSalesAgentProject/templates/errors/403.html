@@ -1,0 +1,72 @@
+# templates/errors/403.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - Sales Training AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style nonce="{{ g.csp_nonce }}">
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-8);
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            color: var(--warning-color);
+            margin-bottom: var(--space-6);
+        }
+        
+        .error-code {
+            font-size: 6rem;
+            font-weight: var(--fw-bold);
+            line-height: 1;
+            color: var(--warning-color);
+            margin-bottom: var(--space-4);
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            margin-bottom: var(--space-2);
+        }
+        
+        .error-message {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: var(--space-8);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: var(--space-4);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">
+            <i class="fas fa-lock"></i>
+        </div>
+        <div class="error-code">403</div>
+        <h1 class="error-title">Access Denied</h1>
+        <p class="error-message">You don't have permission to access this page. Please log in or contact support if you think this is an error.</p>
+        <div class="button-group">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-sign-in-alt"></i> Log In
+            </a>
+            <a href="{{ url_for('index') }}" class="btn btn-outline btn-lg">
+                <i class="fas fa-home"></i> Go Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

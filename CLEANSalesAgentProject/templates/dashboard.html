@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Sales Training AI{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <div class="welcome-card">
+                <div class="welcome-content">
+                    <h1>Welcome back, {{ user.name }}!</h1>
+                    <p>Continue your sales training or start a new practice session.</p>
+                    
+                    <div class="welcome-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">{{ user.completed_roleplays }}</div>
+                            <div class="stat-label">Completed Roleplays</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-value">{{ user.created_at.strftime('%b %d') }}</div>
+                            <div class="stat-label">Joined</div>
+                        </div>
+                    </div>
+                    
+                    <a href="{{ url_for('chat.chat_page') }}" class="btn btn-primary">Start Practice</a>
+                </div>
+                
+                <div class="welcome-image">
+                    <img src="{{ url_for('static', filename='images/dashboard-illustration.svg') }}" alt="Dashboard illustration">
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="dashboard-section">
+                <h2>Your Sales Skills</h2>
+                <p class="section-description">Track your progress across key sales competencies</p>
+                
+                <div class="skills-grid">
+                    {% if user.sales_skills %}
+                        {% for skill_name, skill_value in user.sales_skills.items() %}
+                            <div class="skill-card">
+                                <div class="skill-icon">
+                                    {% if skill_name == 'rapport_building' %}
+                                        <i class="fas fa-handshake"></i>
+                                    {% elif skill_name == 'needs_discovery' %}
+                                        <i class="fas fa-search"></i>
+                                    {% elif skill_name == 'objection_handling' %}
+                                        <i class="fas fa-shield-alt"></i>
+                                    {% elif skill_name == 'closing' %}
+                                        <i class="fas fa-check-circle"></i>
+                                    {% elif skill_name == 'product_knowledge' %}
+                                        <i class="fas fa-book"></i>
+                                    {% else %}
+                                        <i class="fas fa-star"></i>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="skill-details">
+                                    <h3>{{ skill_name|replace('_', ' ')|title }}</h3>
+                                    
+                                    <div class="skill-progress-wrapper">
+                                        <div class="skill-progress">
+                                            <div class="skill-progress-bar" style="width: {{ skill_value }}%;"></div>
+                                        </div>
+                                        <div class="skill-value">{{ skill_value }}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-skills">
+                            <div class="empty-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h3>No skill data yet</h3>
+                            <p>Complete your first roleplay to see your skills assessment</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="dashboard-section">
+                <h2>Recent Conversations</h2>
+                <p class="section-description">Continue where you left off</p>
+                
+                <div class="conversations-grid">
+                    {% if conversations %}
+                        {% for conversation in conversations[:4] %}
+                            <a href="{{ url_for('chat.chat_page') }}?conversation={{ conversation.id }}" class="conversation-card">
+                                <div class="conversation-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div class="conversation-details">
+                                    <h3>{{ conversation.title }}</h3>
+                                    <div class="conversation-meta">
+                                        <span class="conversation-date">{{ conversation.updated_at.strftime('%b %d, %Y') }}</span>
+                                        <span class="conversation-time">{{ conversation.updated_at.strftime('%I:%M %p') }}</span>
+                                    </div>
+                                </div>
+                                <div class="conversation-arrow">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </a>
+                        {% endfor %}
+                        
+                        {% if conversations|length > 4 %}
+                            <a href="{{ url_for('chat.chat_page') }}" class="view-all-link">
+                                View all conversations <i class="fas fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <div class="empty-conversations">
+                            <div class="empty-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3>No conversations yet</h3>
+                            <p>Start your first practice session to improve your sales skills</p>
+                            <a href="{{ url_for('chat.chat_page') }}" class="btn btn-primary">Start Practice</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="dashboard-section">
+                <h2>Feedback Summary</h2>
+                <p class="section-description">Insights from your training sessions</p>
+                
+                <div class="feedback-summary">
+                    <div class="feedback-column">
+                        <h3>Strengths</h3>
+                        {% if user.strengths and user.strengths|length > 0 %}
+                            <ul class="feedback-list">
+                                {% for strength in user.strengths %}
+                                    <li>
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>{{ strength }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="empty-feedback">
+                                <p>Complete a practice session to identify your strengths</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="feedback-column">
+                        <h3>Areas to Improve</h3>
+                        {% if user.weaknesses and user.weaknesses|length > 0 %}
+                            <ul class="feedback-list">
+                                {% for weakness in user.weaknesses %}
+                                    <li>
+                                        <i class="fas fa-arrow-circle-up"></i>
+                                        <span>{{ weakness }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="empty-feedback">
+                                <p>Complete a practice session to identify areas for improvement</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,226 @@
+/* 
+ * Sales Training AI - Authentication Styles
+ * Styles for login and registration pages
+ */
+
+.auth-section {
+  padding: var(--space-8) 0;
+  min-height: calc(100vh - 16rem);
+  display: flex;
+  align-items: center;
+}
+
+.auth-container {
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-xl);
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.auth-form-container {
+  flex: 1;
+  padding: var(--space-8);
+  max-width: 32rem;
+}
+
+.auth-header {
+  margin-bottom: var(--space-8);
+}
+
+.auth-header h1 {
+  color: var(--neutral-900);
+  margin-bottom: var(--space-2);
+}
+
+.auth-header p {
+  color: var(--neutral-500);
+  font-size: var(--fs-lg);
+}
+
+.auth-form .form-group:last-of-type {
+  margin-bottom: var(--space-6);
+}
+
+.password-strength {
+  margin-top: var(--space-2);
+}
+
+.strength-meter {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+}
+
+.strength-segment {
+  height: 4px;
+  flex: 1;
+  background-color: var(--neutral-200);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-normal);
+}
+
+.strength-segment.weak {
+  background-color: var(--error-color);
+}
+
+.strength-segment.medium {
+  background-color: var(--warning-color);
+}
+
+.strength-segment.strong {
+  background-color: var(--success-color);
+}
+
+.strength-text {
+  font-size: var(--fs-sm);
+  color: var(--neutral-500);
+}
+
+#strengthText {
+  font-weight: var(--fw-medium);
+}
+
+.forgot-password {
+  color: var(--primary-color);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  transition: color var(--transition-fast);
+}
+
+.forgot-password:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.auth-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  background-color: var(--primary-light);
+  padding: var(--space-8);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-image img {
+  width: 100%;
+  max-width: 24rem;
+  height: auto;
+  margin-bottom: var(--space-8);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.auth-image-text {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-image-text h2 {
+  color: var(--primary-color);
+  margin-bottom: var(--space-2);
+}
+
+.auth-image-text p {
+  color: var(--neutral-700);
+  max-width: 24rem;
+}
+
+.auth-footer {
+  margin-top: var(--space-6);
+  text-align: center;
+}
+
+.auth-footer p {
+  color: var(--neutral-500);
+}
+
+.auth-footer a {
+  color: var(--primary-color);
+  font-weight: var(--fw-medium);
+  transition: color var(--transition-fast);
+}
+
+.auth-footer a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.social-auth {
+  margin-bottom: var(--space-6);
+}
+
+.shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Responsive styles */
+@media (max-width: 64rem) {
+  .auth-container {
+    flex-direction: column;
+    max-width: 32rem;
+  }
+  
+  .auth-image {
+    order: -1;
+    padding: var(--space-6);
+  }
+  
+  .auth-image img {
+    max-width: 16rem;
+    margin-bottom: var(--space-4);
+  }
+  
+  .auth-form-container {
+    padding: var(--space-6);
+  }
+}
+
+@media (max-width: 36rem) {
+  .auth-section {
+    padding: var(--space-4) 0;
+  }
+  
+  .auth-form-container {
+    padding: var(--space-4);
+  }
+  
+  .auth-header {
+    margin-bottom: var(--space-6);
+  }
+  
+  .auth-header h1 {
+    font-size: var(--fs-2xl);
+  }
+  
+  .auth-header p {
+    font-size: var(--fs-base);
+  }
+  
+  .auth-image {
+    padding: var(--space-4);
+  }
+  
+  .auth-image img {
+    max-width: 12rem;
+    margin-bottom: var(--space-2);
+  }
+  
+  .auth-image-text h2 {
+    font-size: var(--fs-xl);
+  }
+  
+  .auth-image-text p {
+    font-size: var(--fs-sm);
+  }
+}
